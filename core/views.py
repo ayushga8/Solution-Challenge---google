@@ -14,7 +14,11 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.template.loader import get_template
 from django.views.decorators.csrf import csrf_exempt
-from xhtml2pdf import pisa
+try:
+    from xhtml2pdf import pisa
+except ImportError:
+    pisa = None
+
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 from .models import Dataset, AnalysisResult, FairnessMetric
@@ -469,16 +473,23 @@ def export_pdf(request, dataset_id):
         'is_pdf': True,
     }
 
+    if not pisa:
+        messages.error(request, "PDF export is not supported in this environment yet due to missing system libraries. Please use the web table view or Print to PDF from your browser.")
+        return redirect('report', dataset_id=dataset.id)
+
     template = get_template('core/report_pdf.html')
     html = template.render(context)
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="bias_audit_{dataset.name}.pdf"'
 
-    pisa_status = pisa.CreatePDF(io.BytesIO(html.encode('utf-8')), dest=response)
-
-    if pisa_status.err:
-        return HttpResponse('Error generating PDF', status=500)
+    try:
+        pisa_status = pisa.CreatePDF(io.BytesIO(html.encode('utf-8')), dest=response)
+        if pisa_status.err:
+            return HttpResponse('Error generating PDF', status=500)
+    except Exception as e:
+        messages.error(request, f"PDF generation failed: {str(e)}")
+        return redirect('report', dataset_id=dataset.id)
 
     return response
 

@@ -1,5 +1,7 @@
 django>=5.0
-xhtml2pdf>=0.2.17
+# xhtml2pdf removed because it requires system-level 'cairo' which is not available on Vercel.
+# PDF generation will be disabled on the web version.
+
 gunicorn>=22.0
 whitenoise>=6.5
 google-auth>=2.0
