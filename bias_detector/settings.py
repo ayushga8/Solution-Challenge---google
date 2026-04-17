@@ -70,10 +70,18 @@ WSGI_APPLICATION = 'bias_detector.wsgi.application'
 # Database
 # Vercel's serverless environment has a read-only filesystem except for /tmp
 if os.getenv('VERCEL') == '1':
+    tmp_db = '/tmp/db.sqlite3'
+    # Copy the pre-populated database to /tmp so tables exist natively
+    if not os.path.exists(tmp_db):
+        import shutil
+        original_db = BASE_DIR / 'db.sqlite3'
+        if original_db.exists():
+            shutil.copy2(original_db, tmp_db)
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': '/tmp/db.sqlite3',
+            'NAME': tmp_db,
         }
     }
 else:
