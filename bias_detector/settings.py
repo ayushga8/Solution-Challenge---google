@@ -84,6 +84,9 @@ if os.getenv('VERCEL') == '1':
             'NAME': tmp_db,
         }
     }
+    # Store session data in browser cookies instead of ephemeral /tmp database
+    # This prevents users from being logged out when Vercel switches containers
+    SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 else:
     DATABASES = {
         'default': {
