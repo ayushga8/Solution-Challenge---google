@@ -1,0 +1,145 @@
+name,age,gender,race,income,credit_score,loan_amount,employment_years,education,approved
+John Smith,34,Male,White,75000,720,25000,8,Bachelor,Yes
+Maria Garcia,28,Female,Hispanic,52000,680,18000,4,Master,Yes
+James Johnson,45,Male,Black,61000,650,30000,12,Bachelor,No
+Sarah Williams,31,Female,White,88000,750,22000,6,Master,Yes
+Robert Brown,52,Male,Black,45000,580,35000,15,High School,No
+Jennifer Davis,26,Female,White,67000,710,15000,3,Bachelor,Yes
+Michael Wilson,38,Male,Hispanic,54000,640,28000,9,Bachelor,No
+Lisa Anderson,33,Female,Black,71000,700,20000,7,Master,Yes
+David Martinez,29,Male,Hispanic,48000,620,22000,5,Bachelor,No
+Emily Thomas,41,Female,White,92000,780,18000,11,Master,Yes
+William Jackson,36,Male,Black,58000,660,32000,10,Bachelor,No
+Jessica White,30,Female,White,73000,730,16000,5,Bachelor,Yes
+Christopher Harris,47,Male,White,85000,740,28000,18,Master,Yes
+Amanda Martin,25,Female,Hispanic,42000,600,12000,2,Bachelor,No
+Daniel Thompson,39,Male,Black,63000,670,25000,13,Bachelor,No
+Michelle Robinson,35,Female,White,79000,720,20000,8,Master,Yes
+Matthew Clark,43,Male,White,95000,760,35000,16,Master,Yes
+Stephanie Lewis,27,Female,Black,51000,630,18000,4,Bachelor,No
+Andrew Lee,32,Male,Asian,82000,750,22000,7,Master,Yes
+Nicole Walker,37,Female,Hispanic,59000,680,15000,9,Bachelor,Yes
+Joshua Hall,50,Male,White,70000,700,30000,20,High School,Yes
+Samantha Allen,29,Female,Black,64000,690,20000,5,Bachelor,Yes
+Kevin Young,44,Male,Hispanic,47000,610,28000,14,High School,No
+Rachel King,33,Female,White,86000,740,18000,8,Master,Yes
+Brian Wright,40,Male,Black,55000,640,35000,12,Bachelor,No
+Lauren Scott,26,Female,Asian,78000,730,14000,3,Master,Yes
+Jason Green,35,Male,White,91000,770,25000,10,Master,Yes
+Megan Adams,31,Female,Hispanic,53000,660,16000,6,Bachelor,No
+Ryan Baker,48,Male,White,68000,710,32000,17,Bachelor,Yes
+Ashley Nelson,28,Female,Black,46000,590,22000,4,High School,No
+Tyler Hill,37,Male,Asian,87000,750,20000,9,Master,Yes
+Kayla Campbell,34,Female,White,74000,720,18000,7,Bachelor,Yes
+Justin Mitchell,42,Male,Hispanic,56000,650,30000,13,Bachelor,No
+Amber Roberts,30,Female,White,80000,740,15000,5,Master,Yes
+Brandon Turner,46,Male,Black,50000,620,35000,16,High School,No
+Brittany Phillips,25,Female,Asian,69000,700,12000,2,Bachelor,Yes
+Patrick Evans,38,Male,White,93000,760,28000,11,Master,Yes
+Christina Edwards,32,Female,Hispanic,57000,670,20000,6,Bachelor,No
+Jeremy Collins,51,Male,White,72000,710,30000,22,Bachelor,Yes
+Heather Stewart,36,Female,Black,62000,680,16000,8,Bachelor,Yes
+Marcus Morris,33,Male,Black,49000,610,25000,7,High School,No
+Tiffany Rogers,29,Female,White,83000,740,18000,4,Master,Yes
+Sean Reed,44,Male,Hispanic,60000,660,32000,15,Bachelor,No
+Danielle Cook,27,Female,White,76000,730,14000,3,Bachelor,Yes
+Derek Morgan,41,Male,Black,54000,630,28000,12,Bachelor,No
+Vanessa Bell,35,Female,Asian,89000,760,20000,8,Master,Yes
+Cody Murphy,30,Male,White,65000,700,22000,5,Bachelor,Yes
+Courtney Bailey,38,Female,Hispanic,51000,640,16000,9,Bachelor,No
+Travis Rivera,47,Male,White,97000,780,35000,18,Master,Yes
+Natalie Cooper,26,Female,Black,43000,590,18000,3,High School,No
+Kyle Richardson,36,Male,Asian,84000,750,25000,10,Master,Yes
+Melissa Cox,32,Female,White,71000,710,15000,6,Bachelor,Yes
+Corey Howard,43,Male,Hispanic,58000,660,30000,14,Bachelor,No
+Amy Ward,28,Female,White,77000,730,12000,4,Master,Yes
+Derrick Torres,39,Male,Black,52000,620,28000,11,Bachelor,No
+Kimberly Peterson,34,Female,Asian,90000,770,18000,7,Master,Yes
+Chad Gray,45,Male,White,66000,690,32000,16,Bachelor,Yes
+Holly Ramirez,31,Female,Hispanic,55000,650,20000,5,Bachelor,No
+Victor James,37,Male,Black,48000,600,25000,9,High School,No
+Alicia Watson,29,Female,White,81000,740,16000,4,Master,Yes
+Lance Brooks,42,Male,White,94000,760,30000,13,Master,Yes
+Monica Kelly,33,Female,Black,60000,670,18000,6,Bachelor,Yes
+Shane Sanders,48,Male,Hispanic,53000,640,35000,17,High School,No
+Erica Price,27,Female,White,72000,720,14000,3,Bachelor,Yes
+Terrence Bennett,35,Male,Black,47000,610,28000,8,Bachelor,No
+Lindsey Wood,40,Female,Asian,85000,750,20000,11,Master,Yes
+Dustin Barnes,30,Male,White,69000,700,22000,5,Bachelor,Yes
+Crystal Ross,36,Female,Hispanic,56000,660,16000,8,Bachelor,No
+Damon Henderson,44,Male,Black,51000,630,32000,15,Bachelor,No
+Jenna Coleman,28,Female,White,78000,730,15000,4,Bachelor,Yes
+Greg Jenkins,41,Male,White,88000,750,28000,12,Master,Yes
+Cassandra Perry,32,Female,Hispanic,61000,680,18000,6,Bachelor,Yes
+Tyrone Powell,50,Male,Black,44000,580,30000,20,High School,No
+Hannah Long,26,Female,White,74000,720,12000,3,Bachelor,Yes
+Alex Patterson,38,Male,Asian,92000,770,25000,10,Master,Yes
+Rebecca Hughes,34,Female,Black,65000,690,20000,7,Bachelor,Yes
+Troy Flores,43,Male,Hispanic,57000,650,32000,14,Bachelor,No
+Sara Washington,29,Female,White,82000,740,16000,5,Master,Yes
+Dwayne Butler,46,Male,Black,50000,620,35000,16,High School,No
+Kelly Simmons,31,Female,Asian,76000,730,18000,6,Master,Yes
+Chris Foster,37,Male,White,70000,700,25000,9,Bachelor,Yes
+Adriana Gonzalez,33,Female,Hispanic,59000,670,14000,7,Bachelor,Yes
+Malcolm Russell,40,Male,Black,53000,640,28000,12,Bachelor,No
+Meredith Griffin,27,Female,White,84000,750,15000,4,Master,Yes
+Brett Diaz,35,Male,White,90000,760,22000,8,Master,Yes
+Jasmine Hayes,30,Female,Black,62000,680,20000,5,Bachelor,Yes
+Ruben Myers,47,Male,Hispanic,49000,610,30000,17,High School,No
+Paige Ford,25,Female,White,73000,720,12000,2,Bachelor,Yes
+Warren Hamilton,42,Male,Black,56000,650,30000,13,Bachelor,No
+Kathryn Graham,36,Female,Asian,87000,750,18000,8,Master,Yes
+Dylan Sullivan,31,Male,White,67000,700,22000,6,Bachelor,Yes
+Veronica West,28,Female,Hispanic,52000,640,16000,4,Bachelor,No
+Reginald Jordan,44,Male,Black,46000,600,32000,15,High School,No
+Allison Chavez,34,Female,White,80000,740,15000,7,Master,Yes
+Spencer Cole,39,Male,White,93000,770,28000,11,Master,Yes
+Bianca Freeman,30,Female,Black,58000,660,20000,5,Bachelor,No
+Omar Ortiz,36,Male,Hispanic,54000,650,25000,9,Bachelor,No
+Taylor Hunt,26,Female,White,75000,720,14000,3,Bachelor,Yes
+Dominic Webb,48,Male,Black,51000,630,35000,18,Bachelor,No
+Chelsea Dunn,32,Female,Asian,86000,760,18000,6,Master,Yes
+Brent Stone,43,Male,White,71000,710,30000,15,Bachelor,Yes
+Valerie Carroll,29,Female,Hispanic,48000,620,16000,4,High School,No
+Jamal Warren,37,Male,Black,55000,640,25000,10,Bachelor,No
+Erin Boyd,35,Female,White,83000,740,15000,8,Master,Yes
+Grant Palmer,40,Male,White,89000,760,28000,12,Master,Yes
+Alison Burns,27,Female,Black,60000,670,18000,3,Bachelor,Yes
+Pablo Reyes,45,Male,Hispanic,47000,600,30000,16,High School,No
+Hayley Day,31,Female,White,77000,730,14000,5,Bachelor,Yes
+Lamar Dixon,34,Male,Black,50000,620,28000,8,Bachelor,No
+Christine Kim,33,Female,Asian,91000,770,20000,7,Master,Yes
+Todd Spencer,41,Male,White,68000,700,25000,13,Bachelor,Yes
+Gina Medina,28,Female,Hispanic,53000,650,16000,4,Bachelor,No
+Rodney Fields,46,Male,Black,44000,590,32000,17,High School,No
+Leah Lamb,30,Female,White,79000,740,15000,5,Master,Yes
+Daryl Weaver,38,Male,White,85000,750,22000,10,Master,Yes
+Priya Sharma,29,Female,Asian,81000,730,18000,5,Master,Yes
+Rosa Castillo,35,Female,Hispanic,50000,630,20000,7,Bachelor,No
+Kwame Owusu,33,Male,Black,57000,660,24000,8,Bachelor,No
+Wei Zhang,40,Male,Asian,88000,760,22000,11,Master,Yes
+Fatima Ali,27,Female,Black,59000,670,16000,4,Bachelor,Yes
+Carlos Vega,42,Male,Hispanic,62000,680,28000,13,Bachelor,Yes
+Jin Park,31,Female,Asian,76000,720,18000,6,Master,Yes
+Tyrell Washington,36,Male,Black,48000,610,30000,9,High School,No
+Sofia Herrera,28,Female,Hispanic,55000,660,14000,3,Bachelor,No
+Raj Patel,44,Male,Asian,94000,780,25000,15,Master,Yes
+Aaliyah Jackson,25,Female,Black,42000,590,20000,2,High School,No
+Hiroshi Tanaka,39,Male,Asian,83000,740,22000,10,Master,Yes
+Carmen Ruiz,32,Female,Hispanic,58000,670,18000,6,Bachelor,Yes
+Malik Thompson,47,Male,Black,52000,630,32000,18,Bachelor,No
+Mei Lin Chen,30,Female,Asian,79000,730,16000,5,Master,Yes
+Diego Lopez,34,Male,Hispanic,49000,620,26000,8,Bachelor,No
+Aisha Williams,29,Female,Black,63000,690,18000,4,Bachelor,Yes
+Kenji Nakamura,41,Male,Asian,90000,770,24000,12,Master,Yes
+Lucia Santos,36,Female,Hispanic,54000,650,20000,9,Bachelor,No
+Darnell Brown,43,Male,Black,46000,600,30000,14,High School,No
+Yuki Watanabe,28,Female,Asian,82000,740,15000,4,Master,Yes
+Roberto Mendez,37,Male,Hispanic,56000,660,28000,10,Bachelor,No
+Tamika Harris,33,Female,Black,61000,680,22000,7,Bachelor,Yes
+Arjun Gupta,35,Male,Asian,86000,750,20000,8,Master,Yes
+Isabella Flores,26,Female,Hispanic,51000,640,14000,3,Bachelor,No
+Jerome Davis,49,Male,Black,45000,590,34000,19,High School,No
+Sakura Yamamoto,31,Female,Asian,77000,720,16000,5,Master,Yes
+Miguel Torres,40,Male,Hispanic,60000,680,26000,12,Bachelor,Yes
+Latoya Robinson,34,Female,Black,53000,640,22000,7,Bachelor,No

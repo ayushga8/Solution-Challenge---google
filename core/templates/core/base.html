@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Unbiased AI Decision — Detect and fix hidden bias in your datasets and AI models. Ensure fairness in automated decisions.">
+    <title>{% block title %}Unbiased AI Decision{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+    <meta http-equiv="Content-Security-Policy" content="require-trusted-types-for 'script'; trusted-types default firebase-js-sdk goog#html gapi#gapi">
+    <script>
+        // Trusted Types policy for Firebase SDK compatibility
+        if (window.trustedTypes && window.trustedTypes.createPolicy) {
+            window.trustedTypes.createPolicy('default', {
+                createHTML: (s) => s,
+                createScriptURL: (s) => s,
+                createScript: (s) => s,
+            });
+        }
+    </script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="nav-logo">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Unbiased AI</span>
+            </a>
+            <div class="nav-links">
+                <a href="{% url 'index' %}" class="nav-link">Home</a>
+                <a href="{% url 'index' %}#features" class="nav-link">Features</a>
+                <a href="{% url 'index' %}#upload-section" class="nav-link">Analyze</a>
+                <a href="{% url 'history' %}" class="nav-link">History</a>
+                {% if user.is_authenticated %}
+                <div class="nav-user">
+                    <span class="nav-avatar">{{ user.username.0|upper }}</span>
+                    <span class="nav-username">{{ user.username }}</span>
+                    <a href="{% url 'logout' %}" class="nav-link nav-logout">Logout</a>
+                </div>
+                {% else %}
+                <a href="{% url 'login' %}" class="nav-link">Login</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary btn-sm">Sign Up</a>
+                {% endif %}
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+            </div>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="{% url 'index' %}" class="mobile-link">Home</a>
+        <a href="{% url 'index' %}#features" class="mobile-link">Features</a>
+        <a href="{% url 'index' %}#upload-section" class="mobile-link">Analyze</a>
+        <a href="{% url 'history' %}" class="mobile-link">History</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" class="mobile-link">Logout ({{ user.username }})</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="mobile-link">Login</a>
+        <a href="{% url 'signup' %}" class="mobile-link">Sign Up</a>
+        {% endif %}
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                        <span>Unbiased AI Decision</span>
+                    </div>
+                    <p class="footer-tagline">Ensuring fairness and detecting bias in automated decisions. Built for the Google Solution Challenge.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>UN SDG Alignment</h4>
+                    <div class="sdg-badges">
+                        <span class="sdg-badge sdg-10">SDG 10: Reduced Inequalities</span>
+                        <span class="sdg-badge sdg-16">SDG 16: Peace & Justice</span>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="{% url 'index' %}">Home</a>
+                    <a href="{% url 'index' %}#upload-section">Analyze Dataset</a>
+                    <a href="{% url 'history' %}">Analysis History</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Unbiased AI Decision — Google Solution Challenge Project</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'core/js/app.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

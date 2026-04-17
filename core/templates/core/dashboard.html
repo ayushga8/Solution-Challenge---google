@@ -1,0 +1,234 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard — {{ dataset.name }} | Unbiased AI Decision{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+    <div class="container">
+        <!-- Dashboard Header -->
+        <div class="dash-header reveal">
+            <div class="dash-header-left">
+                <a href="{% url 'index' %}" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                    Back
+                </a>
+                <h1 class="dash-title">{{ dataset.name }}</h1>
+                <p class="dash-subtitle">Uploaded {{ dataset.uploaded_at|date:"F d, Y \a\t g:i A" }}</p>
+            </div>
+            <div class="dash-header-right">
+                <a href="{% url 'export_pdf' dataset.id %}" class="btn btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    Download PDF
+                </a>
+                <a href="{% url 'report' dataset.id %}" class="btn btn-ghost" target="_blank">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Web Report
+                </a>
+            </div>
+        </div>
+
+        <!-- Overview Cards -->
+        <div class="overview-grid reveal">
+            <!-- Fairness Score -->
+            <div class="overview-card score-card">
+                <div class="card-header">
+                    <span class="card-label">Overall Fairness Score</span>
+                    <span class="severity-badge severity-{{ analysis.overall_severity }}">{{ analysis.get_overall_severity_display }}</span>
+                </div>
+                <div class="score-circle-container">
+                    <div class="score-circle" data-score="{{ analysis.overall_score }}" data-severity="{{ analysis.overall_severity }}">
+                        <svg viewBox="0 0 120 120">
+                            <circle class="score-bg" cx="60" cy="60" r="52"/>
+                            <circle class="score-fill-circle" cx="60" cy="60" r="52" 
+                                style="stroke-dasharray: {{ analysis.overall_score|floatformat:0 }}% 1000%; 
+                                       stroke: var(--severity-{{ analysis.overall_severity }})"/>
+                        </svg>
+                        <div class="score-text">
+                            <span class="score-value">{{ analysis.overall_score|floatformat:1 }}</span>
+                            <span class="score-unit">/ 100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dataset Stats -->
+            <div class="overview-card">
+                <div class="card-header">
+                    <span class="card-label">Dataset Overview</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                </div>
+                <div class="stats-list">
+                    <div class="stat-row">
+                        <span class="stat-key">Rows</span>
+                        <span class="stat-val">{{ dataset.row_count|floatformat:0 }}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-key">Columns</span>
+                        <span class="stat-val">{{ dataset.column_count }}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-key">Target Column</span>
+                        <span class="stat-val">{{ dataset.target_column|default:"Not detected" }}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-key">Protected Attributes</span>
+                        <span class="stat-val">{{ dataset.protected_attributes|length }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Protected Attributes Detected -->
+            <div class="overview-card">
+                <div class="card-header">
+                    <span class="card-label">Protected Attributes</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div class="attrs-list">
+                    {% for attr in dataset.protected_attributes %}
+                    <span class="attr-chip">{{ attr }}</span>
+                    {% endfor %}
+                </div>
+                <p class="card-hint">These columns were auto-detected as sensitive attributes</p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section reveal">
+            <h2 class="section-title-sm">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Visualizations
+            </h2>
+            <div class="charts-grid">
+                <!-- Outcome Rates Chart -->
+                <div class="chart-card">
+                    <h3 class="chart-title">Outcome Rates by Group</h3>
+                    <p class="chart-desc">Positive outcome rates for each demographic group</p>
+                    <div class="chart-container">
+                        <canvas id="outcomeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Distribution Chart -->
+                <div class="chart-card">
+                    <h3 class="chart-title">Group Distribution</h3>
+                    <p class="chart-desc">Representation of each group in the dataset</p>
+                    <div class="chart-container">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Fairness Radar -->
+                <div class="chart-card">
+                    <h3 class="chart-title">Fairness Metrics Radar</h3>
+                    <p class="chart-desc">Multi-metric fairness overview per protected attribute</p>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Intersectional Heatmap -->
+                <div class="chart-card chart-card-wide">
+                    <h3 class="chart-title">Intersectional Analysis Heatmap</h3>
+                    <p class="chart-desc">Positive outcome rates across all groups — darker = higher rate</p>
+                    <div class="heatmap-container" id="heatmapContainer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Detail Section -->
+        <div class="metrics-section reveal">
+            <h2 class="section-title-sm">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                Detailed Fairness Metrics
+            </h2>
+            {% for attr, metrics_list in metrics_by_attr.items %}
+            <div class="metric-group">
+                <h3 class="metric-group-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    {{ attr }}
+                </h3>
+                <div class="metrics-cards">
+                    {% for m in metrics_list %}
+                    <div class="metric-card metric-{{ m.status }}">
+                        <div class="metric-card-header">
+                            <span class="metric-name">{{ m.type_display }}</span>
+                            <span class="metric-status-badge status-{{ m.status }}">
+                                {% if m.status == 'pass' %}✓ Pass{% elif m.status == 'warning' %}⚠ Warning{% else %}✗ Fail{% endif %}
+                            </span>
+                        </div>
+                        <div class="metric-value-row">
+                            <span class="metric-big-value">{{ m.value|floatformat:4 }}</span>
+                            <span class="metric-threshold">Threshold: {{ m.threshold|floatformat:2 }}</span>
+                        </div>
+                        <div class="metric-progress">
+                            <div class="metric-progress-bar" style="width: {% widthratio m.value 1 100 %}%; background: var(--status-{{ m.status }})"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Recommendations -->
+        <div class="recommendations-section reveal">
+            <h2 class="section-title-sm">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                Recommendations
+            </h2>
+            <div class="recommendations-list">
+                {% for rec in recommendations %}
+                <div class="rec-card rec-{{ rec.severity }}">
+                    <div class="rec-header">
+                        <span class="rec-severity severity-badge severity-{{ rec.severity }}">{{ rec.severity|title }}</span>
+                        <span class="rec-metric">{{ rec.metric }}</span>
+                    </div>
+                    <h4 class="rec-title">{{ rec.title }}</h4>
+                    <p class="rec-desc">{{ rec.description }}</p>
+                    <div class="rec-actions">
+                        <h5>Suggested Actions:</h5>
+                        <ul>
+                            {% for action in rec.actions %}
+                            <li>{{ action }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="dash-actions reveal">
+            <a href="{% url 'export_pdf' dataset.id %}" class="btn btn-primary btn-lg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                Download PDF Report
+            </a>
+            <a href="{% url 'report' dataset.id %}" class="btn btn-ghost btn-lg" target="_blank">
+                View Web Report
+            </a>
+            <a href="{% url 'index' %}" class="btn btn-ghost btn-lg">
+                Analyze Another Dataset
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Pass data to JS for chart rendering
+    const ANALYSIS_DATA = {
+        metrics: {{ metrics_json|safe }},
+        detailed: {{ detailed_results_json|safe }},
+        intersectional: {{ intersectional_json|safe }},
+        score: {{ analysis.overall_score }},
+        severity: "{{ analysis.overall_severity }}",
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        renderDashboardCharts(ANALYSIS_DATA);
+    });
+</script>
+{% endblock %}
