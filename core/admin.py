@@ -20,20 +20,52 @@ admin.site.unregister(User)
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display = ['username', 'email', 'first_name', 'is_active', 'is_staff', 'is_superuser', 'date_joined']
-    list_filter = ['is_staff', 'is_superuser', 'is_active', 'date_joined']
-    actions = ['make_admin', 'remove_admin', 'activate_users', 'deactivate_users']
+    list_display = ['username', 'email', 'first_name', 'role', 'is_active', 'date_joined']
+    list_filter = ['is_staff', 'is_superuser', 'is_active', 'groups', 'date_joined']
+    actions = ['make_owner', 'make_moderator', 'remove_role', 'activate_users', 'deactivate_users']
 
-    @admin.action(description='✅ Make selected users Admin')
-    def make_admin(self, request, queryset):
+    @admin.display(description='Role')
+    def role(self, obj):
+        if obj.is_superuser:
+            return '👑 Owner'
+        elif obj.groups.filter(name='Moderators').exists():
+            return '🛡️ Moderator'
+        elif obj.is_staff:
+            return '👔 Staff (No Group)'
+        return '👤 Normal User'
+
+    @admin.action(description='👑 Make selected users Owner (Superuser)')
+    def make_owner(self, request, queryset):
         count = queryset.update(is_staff=True, is_superuser=True)
-        self.message_user(request, f'{count} user(s) promoted to Admin.')
+        self.message_user(request, f'{count} user(s) promoted to Owner.')
 
-    @admin.action(description='❌ Remove Admin from selected users')
-    def remove_admin(self, request, queryset):
+    @admin.action(description='🛡️ Make selected users Moderator (Staff)')
+    def make_moderator(self, request, queryset):
+        from django.contrib.auth.models import Group
+        mod_group, created = Group.objects.get_or_create(name='Moderators')
+        
+        count = queryset.update(is_staff=True, is_superuser=False)
+        for user in queryset:
+            user.groups.add(mod_group)
+            
+        if created:
+            self.message_user(request, f'Moderators group was created. Please assign permissions to it.', level='WARNING')
+            
+        self.message_user(request, f'{count} user(s) promoted to Moderator.')
+
+    @admin.action(description='❌ Remove Admin/Mod roles from selected users')
+    def remove_role(self, request, queryset):
         queryset = queryset.exclude(pk=request.user.pk)  # Can't demote yourself
         count = queryset.update(is_staff=False, is_superuser=False)
-        self.message_user(request, f'{count} user(s) demoted from Admin.')
+        from django.contrib.auth.models import Group
+        try:
+            mod_group = Group.objects.get(name='Moderators')
+            for user in queryset:
+                user.groups.remove(mod_group)
+        except Group.DoesNotExist:
+            pass
+            
+        self.message_user(request, f'{count} user(s) demoted to Normal User.')
 
     @admin.action(description='🟢 Activate selected users')
     def activate_users(self, request, queryset):

@@ -38,6 +38,22 @@ class DatasetUploadForm(forms.ModelForm):
 
 class SignUpForm(UserCreationForm):
     """User registration form with email."""
+    first_name = forms.CharField(
+        required=True,
+        max_length=30,
+        widget=forms.TextInput(attrs={
+            'class': 'form-input',
+            'placeholder': 'First Name',
+        })
+    )
+    last_name = forms.CharField(
+        required=True,
+        max_length=30,
+        widget=forms.TextInput(attrs={
+            'class': 'form-input',
+            'placeholder': 'Last Name',
+        })
+    )
     email = forms.EmailField(
         required=True,
         widget=forms.EmailInput(attrs={
@@ -48,7 +64,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
         widgets = {
             'username': forms.TextInput(attrs={
                 'class': 'form-input',
@@ -70,6 +86,8 @@ class SignUpForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
         if commit:
             user.save()
         return user
