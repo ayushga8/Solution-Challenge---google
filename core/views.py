@@ -40,6 +40,7 @@ def index(request):
     })
 
 
+@csrf_exempt
 def signup_view(request):
     """User registration page — sends OTP on signup."""
     if request.user.is_authenticated:
@@ -74,6 +75,7 @@ def signup_view(request):
     })
 
 
+@csrf_exempt
 def verify_otp(request):
     """OTP verification page after signup."""
     user_id = request.session.get('signup_user_id')
@@ -153,6 +155,7 @@ def resend_otp(request):
 
 
 
+@csrf_exempt
 def login_view(request):
     """User login page."""
     if request.user.is_authenticated:
