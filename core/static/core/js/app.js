@@ -230,8 +230,8 @@ function renderOutcomeChart(detailed, attrs, colors, alphaColors) {
                 {
                     label: 'Positive Outcome (%)',
                     data: positiveRates,
-                    backgroundColor: colors.slice(0, labels.length).map(c => c + '99'),
-                    borderColor: colors.slice(0, labels.length),
+                    backgroundColor: 'rgba(124, 58, 237, 0.8)', // Primary brand color
+                    borderColor: '#7c3aed',
                     borderWidth: 2,
                     borderRadius: 6,
                 },
@@ -342,6 +342,9 @@ function renderRadarChart(metricsData, attrs, colors, alphaColors) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: { left: 40, right: 40, top: 10, bottom: 10 }
+            },
             plugins: {
                 legend: { position: 'top', labels: { color: '#94a3b8', font: { family: 'Inter' }, usePointStyle: true } },
             },
@@ -411,10 +414,8 @@ function renderHeatmap(intersectionalData) {
 
         sortedGroups.forEach(([group, rate], idx) => {
             html += '<tr>';
-            if (idx === 0) {
-                html += `<td class="heatmap-row-label" rowspan="${sortedGroups.length}">${attr}</td>`;
-            }
-            html += `<td class="heatmap-row-label">${group}</td>`;
+            html += `<td class="heatmap-row-label" style="${idx === 0 ? 'font-weight: 700; color: var(--primary)' : 'opacity: 0.6; padding-left: 1.5rem; border-top: none'}">${idx === 0 ? attr : '↳'}</td>`;
+            html += `<td class="heatmap-row-label" style="${idx !== 0 ? 'border-top: none' : ''}">${group}</td>`;
             html += `<td style="text-align:center; font-weight:700;">${rate.toFixed(1)}%</td>`;
             html += `<td style="background:${getColor(rate)}; color:${getTextColor(rate)}; text-align:center; font-weight:700;">`;
             html += `<div style="width:${Math.max(rate, 5)}%; min-width:30px; height:28px; line-height:28px; border-radius:4px; display:inline-block;">${rate.toFixed(1)}%</div>`;
