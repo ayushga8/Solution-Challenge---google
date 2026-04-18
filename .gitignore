@@ -10,7 +10,7 @@ dist/
 build/
 
 # Django
-db.sqlite3
+# db.sqlite3 (Un-ignored for Vercel deployment)
 media/
 # staticfiles/ (Un-ignored for Vercel deployment)
 *.log
