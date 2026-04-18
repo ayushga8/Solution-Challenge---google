@@ -617,7 +617,14 @@ button { font-family: inherit; cursor: pointer; }
 .score-bg { fill: none; stroke: var(--border); stroke-width: 8; }
 .score-fill-circle {
     fill: none; stroke-width: 8; stroke-linecap: round;
-    transition: stroke-dasharray 2s ease;
+    stroke-dasharray: 326.7;
+    stroke-dashoffset: 326.7;
+    animation: drawScoreCircle 1.5s ease-out forwards 0.2s;
+}
+@keyframes drawScoreCircle {
+    to {
+        stroke-dashoffset: calc(326.7 - (326.7 * var(--score) / 100));
+    }
 }
 .score-text {
     position: absolute; inset: 0; display: flex; flex-direction: column;

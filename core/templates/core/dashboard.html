@@ -41,7 +41,7 @@
                         <svg viewBox="0 0 120 120">
                             <circle class="score-bg" cx="60" cy="60" r="52"/>
                             <circle class="score-fill-circle" cx="60" cy="60" r="52" 
-                                style="stroke-dasharray: {{ analysis.overall_score|floatformat:0 }}% 1000%; 
+                                style="--score: {{ analysis.overall_score|floatformat:0 }}; 
                                        stroke: var(--severity-{{ analysis.overall_severity }})"/>
                         </svg>
                         <div class="score-text">
