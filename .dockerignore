@@ -1,0 +1,25 @@
+# Standard Python ignore
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Django specific
+db.sqlite3
+media/
+staticfiles/
+
+# Google Cloud specific
+.gcloud/
+.dockerignore
+
+# Git
+.git
+.github
+.gitignore
+
+# Vercel
+.vercel
+vercel.json
+build_files.sh

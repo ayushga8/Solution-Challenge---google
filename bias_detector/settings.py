@@ -20,12 +20,17 @@ DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = ['*']
 
+# Detect environment
+IS_VERCEL = os.getenv('VERCEL') == '1'
+IS_GCP = os.getenv('K_SERVICE') is not None  # K_SERVICE is set by Cloud Run
+
 # Vercel proxy configuration for HTTPS and CSRF
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 CSRF_TRUSTED_ORIGINS = [
     'https://*.vercel.app',
     'https://solution-challenge-google-nine.vercel.app',
+    'https://*.a.run.app', # Wildcard for Cloud Run
     'http://localhost:8000',
     'http://127.0.0.1:8000',
 ]
@@ -83,7 +88,7 @@ WSGI_APPLICATION = 'bias_detector.wsgi.application'
 
 # Database
 # Vercel's serverless environment has a read-only filesystem except for /tmp
-if os.getenv('VERCEL') == '1':
+if IS_VERCEL:
     tmp_db = '/tmp/db.sqlite3'
     # Copy the pre-populated database to /tmp so tables exist natively
     if not os.path.exists(tmp_db):
@@ -99,11 +104,34 @@ if os.getenv('VERCEL') == '1':
         }
     }
     # Store session data in browser cookies instead of ephemeral /tmp database
-    # This prevents users from being logged out when Vercel switches containers
     SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
-    
-    # Let WhiteNoise find static files directly (no collectstatic needed)
     WHITENOISE_USE_FINDERS = True
+
+elif IS_GCP:
+    # Google Cloud Run + Cloud SQL (PostgreSQL)
+    db_name = os.getenv('DB_NAME', 'bias_db')
+    db_user = os.getenv('DB_USER', 'postgres')
+    db_pass = os.getenv('DB_PASS', '')
+    db_conn = os.getenv('DB_CONNECTION_NAME') # project:region:instance
+    
+    if db_conn:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': db_name,
+                'USER': db_user,
+                'PASSWORD': db_pass,
+                'HOST': f'/cloudsql/{db_conn}', 
+            }
+        }
+    else:
+        # Fallback to local SQLite if connector is missing
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 else:
     DATABASES = {
         'default': {
