@@ -22,6 +22,7 @@ ALLOWED_HOSTS = ['*']
 
 # Vercel proxy configuration for HTTPS and CSRF
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
 CSRF_TRUSTED_ORIGINS = [
     'https://*.vercel.app',
     'http://localhost:8000',
