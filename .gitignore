@@ -12,7 +12,7 @@ build/
 # Django
 db.sqlite3
 media/
-staticfiles/
+# staticfiles/ (Un-ignored for Vercel deployment)
 *.log
 
 # IDE

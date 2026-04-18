@@ -82,35 +82,34 @@ WSGI_APPLICATION = 'bias_detector.wsgi.application'
 
 
 # Database
-# Vercel's serverless environment has a read-only filesystem except for /tmp
-if os.getenv('VERCEL') == '1':
-    tmp_db = '/tmp/db.sqlite3'
-    # Copy the pre-populated database to /tmp so tables exist natively
-    if not os.path.exists(tmp_db):
-        import shutil
-        original_db = BASE_DIR / 'db.sqlite3'
-        if original_db.exists():
-            shutil.copy2(original_db, tmp_db)
+import dj_database_url
 
+if os.getenv('DATABASE_URL'):
+    # Use Supabase PostgreSQL
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': tmp_db,
-        }
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        )
     }
-    # Store session data in browser cookies instead of ephemeral /tmp database
-    # This prevents users from being logged out when Vercel switches containers
-    SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
-    
-    # Let WhiteNoise find static files directly (no collectstatic needed)
-    WHITENOISE_USE_FINDERS = True
 else:
+    # Use SQLite for local development
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
+if os.getenv('VERCEL') == '1':
+    # Store session data in browser cookies instead of ephemeral /tmp database
+    # This prevents users from being logged out when Vercel switches containers
+    SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+    
+    # Let WhiteNoise find static files directly (no collectstatic needed)
+    WHITENOISE_USE_FINDERS = True
 
 
 # Password validation
