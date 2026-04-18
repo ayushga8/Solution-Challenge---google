@@ -21,7 +21,7 @@ TARGET_KEYWORDS = [
     'approved', 'accepted', 'hired', 'selected', 'admitted', 'granted',
     'result', 'outcome', 'decision', 'label', 'target', 'prediction',
     'predicted', 'class', 'default', 'loan_status', 'status',
-    'pass', 'fail', 'positive', 'negative', 'recidivism', 'score',
+    'pass', 'fail', 'positive', 'negative', 'recidivism',
 ]
 
 
@@ -66,6 +66,55 @@ def is_positive_outcome(value):
     positive_values = {'1', 'yes', 'true', 'approved', 'accepted', 'hired',
                        'selected', 'admitted', 'granted', 'pass', 'positive', 'y'}
     return val in positive_values
+def apply_numeric_binning(rows, attribute):
+    """If an attribute is mostly numeric with >10 unique values, bin it into 4 groups."""
+    valid_nums = []
+    for row in rows:
+        val = row.get(attribute, '').strip()
+        if not val:
+            continue
+        try:
+            valid_nums.append(float(val))
+        except ValueError:
+            pass
+
+    # Only bin if majority are numeric
+    if not valid_nums or len(valid_nums) < len(rows) * 0.5:
+        return
+
+    unique_vals = set(valid_nums)
+    if len(unique_vals) <= 10:
+        return  # Already categorical or very few values
+
+    min_val = min(valid_nums)
+    max_val = max(valid_nums)
+    bin_size = (max_val - min_val) / 4
+    if bin_size == 0:
+        return
+
+    bins = [
+        (min_val, min_val + bin_size),
+        (min_val + bin_size, min_val + 2 * bin_size),
+        (min_val + 2 * bin_size, min_val + 3 * bin_size),
+        (min_val + 3 * bin_size, max_val)
+    ]
+
+    for row in rows:
+        val_str = row.get(attribute, '').strip()
+        if not val_str:
+            continue
+        try:
+            v = float(val_str)
+            if v <= bins[0][1]:
+                row[attribute] = f"{int(bins[0][0])} - {int(bins[0][1])}"
+            elif v <= bins[1][1]:
+                row[attribute] = f"{int(bins[1][0])+1} - {int(bins[1][1])}"
+            elif v <= bins[2][1]:
+                row[attribute] = f"{int(bins[2][0])+1} - {int(bins[2][1])}"
+            else:
+                row[attribute] = f"{int(bins[3][0])+1}+"
+        except ValueError:
+            pass
 
 
 def compute_group_distributions(rows, attribute):
@@ -325,6 +374,7 @@ def run_full_analysis(file_content, protected_attrs=None, target_col=None):
     all_scores = []
 
     for attr in protected_attrs:
+        apply_numeric_binning(rows, attr)
         distribution = compute_group_distributions(rows, attr)
 
         attr_metrics = {
