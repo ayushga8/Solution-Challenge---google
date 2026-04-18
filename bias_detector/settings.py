@@ -87,6 +87,9 @@ if os.getenv('VERCEL') == '1':
     # Store session data in browser cookies instead of ephemeral /tmp database
     # This prevents users from being logged out when Vercel switches containers
     SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+    
+    # Let WhiteNoise find static files directly (no collectstatic needed)
+    WHITENOISE_USE_FINDERS = True
 else:
     DATABASES = {
         'default': {
